@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
     window.MakeThisContext();
 
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    if (!gladLoadGL()) {
         std::cerr << "Failed to initialize GLAD\n";
         return -1;
     }

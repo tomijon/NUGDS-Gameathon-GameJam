@@ -15,6 +15,7 @@ public:
 	 * @param buffer The buffer to make read-only.
 	 */
 	UniqueBuffer(int size, std::unique_ptr<Type[]> buffer) : m_size(size), m_buffer(std::move(buffer)) {}
+	//UniqueBuffer(const UniqueBuffer& other) = delete;
 
 	/**
 	 * @brief Get a read-only span of the buffer.
@@ -22,7 +23,7 @@ public:
 	 * A span is used to prevent you from accidentally manually deleting
 	 * the raw pointer. 
 	 */
-	inline const std::span<const Type> GetBuffer() const { return { m_buffer.get(), m_size }; }
+	inline const std::span<const Type> GetBuffer() const { return { m_buffer.get(), static_cast<size_t>(m_size) }; }
 
 	inline int Size() const { return m_size; }
 
