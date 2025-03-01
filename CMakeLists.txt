@@ -6,11 +6,13 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(SOURCES
 	src/main.cpp
-	src/mesh.hpp
 	src/mesh.cpp
+	src/mesh.hpp
+	src/shader.cpp
+	src/shader.hpp
 	src/unique_buffer.hpp
-	src/window.hpp
 	src/window.cpp
+	src/window.hpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
