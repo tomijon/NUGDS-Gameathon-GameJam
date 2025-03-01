@@ -1,9 +1,11 @@
 #include <iostream>
+#include <cstring>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "window.hpp"
+#include "mesh.hpp"
 
 
 const int TARGET_MONITOR = 0;
@@ -39,6 +41,25 @@ int main(int argc, char* argv[]) {
     GLFWmonitor* fullscreenMonitor = monitors[TARGET_MONITOR];
     const GLFWvidmode* monitorMeta = glfwGetVideoMode(fullscreenMonitor);
 
+
+    float quadVertices[8] = {
+        -1, -1,
+        1, -1,
+        -1, 1,
+        1, 1
+    };
+
+    std::unique_ptr<float[]> quadBuffer = std::make_unique<float[]>(12);
+    std::memcpy(quadBuffer.get(), quadVertices, 8);
+    UniqueBuffer<float> vertices(8, std::move(quadBuffer));
+
+    Mesh quadMesh(std::move(vertices));
+    quadMesh.InitialiseBufferObjects();
+
+
+
+
+
     /*GLFWwindow* window = glfwCreateWindow(monitorMeta->width, monitorMeta->height, "", fullscreenMonitor, nullptr);
     if (!window) {
         std::cerr << "Failed to create window\n";
@@ -56,7 +77,7 @@ int main(int argc, char* argv[]) {
     }
 
     while (window.IsOpen()) {
-        window.Update();
+        quadMesh.Bind();
 
         glfwPollEvents();
     }

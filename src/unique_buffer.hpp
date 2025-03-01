@@ -14,8 +14,7 @@ public:
 	 * @param size The number of elements in the buffer.
 	 * @param buffer The buffer to make read-only.
 	 */
-	UniqueBuffer(int size, std::unique_ptr<Type[]> buffer) : m_size(size), m_buffer(std::move(buffer)) {}
-	//UniqueBuffer(const UniqueBuffer& other) = delete;
+	UniqueBuffer(size_t size, std::unique_ptr<Type[]> buffer) : m_size(size), m_buffer(std::move(buffer)) {}
 
 	/**
 	 * @brief Get a read-only span of the buffer.

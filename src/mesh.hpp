@@ -35,6 +35,7 @@ public:
 	}
 
 	inline void SetVertexSize(unsigned int size) { m_vertexSize = size; }
+	inline void Bind() { glBindVertexArray(m_vertexArrayObject); }
 
 
 	/**
