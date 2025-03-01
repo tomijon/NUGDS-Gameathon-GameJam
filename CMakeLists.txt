@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31)
-project(OpenGLApplication)
+project(AntKingdom)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -8,6 +8,7 @@ set(SOURCES
 	src/main.cpp
 	src/mesh.hpp
 	src/mesh.cpp
+	src/unique_buffer.hpp
 	src/window.hpp
 	src/window.cpp
 )
