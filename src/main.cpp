@@ -6,6 +6,7 @@
 
 #include "window.hpp"
 #include "mesh.hpp"
+#include "shader.hpp"
 
 
 const int TARGET_MONITOR = 0;
@@ -75,7 +76,11 @@ int main(int argc, char* argv[]) {
     Mesh quadMesh(std::move(vertices));
     quadMesh.InitialiseBufferObjects();
 
+    ShaderStage vertex("shaders/vertex.glsl", GL_VERTEX_SHADER);
+    ShaderStage fragment("shaders/fragment.glsl", GL_FRAGMENT_SHADER);
 
+
+    // GAME EVENT LOOP.
     while (window.IsOpen()) {
         window.Update();
         quadMesh.Bind();

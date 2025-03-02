@@ -11,11 +11,12 @@ source_group("shaders" FILES ${SHADER_FILES})
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SHADER_FILES})
 
 # Copy shaders folder to output dir.
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
+add_custom_target(copy-shaders
     COMMAND ${CMAKE_COMMAND} -E copy_directory 
     ${CMAKE_SOURCE_DIR}/src/shaders/ "$<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders"
+    DEPENDS ${SHADER_FILES}
 )
+add_dependencies(${PROJECT_NAME} copy-shaders)
 
 # Make sure VS runs from actual executable location
 set_target_properties(${PROJECT_NAME} PROPERTIES

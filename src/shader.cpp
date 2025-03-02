@@ -3,7 +3,7 @@
 
 #include "shader.hpp"
 
-ShaderStage::ShaderStage(const std::filesystem::path& sourcePath, GLenum type) {
+ShaderStage::ShaderStage(const std::filesystem::path& sourcePath, GLenum type) : m_type(type) {
 	std::string source = LoadSource(sourcePath);
 	CompileShader(source);
     m_refTracker = std::make_shared<int>();
