@@ -3,19 +3,18 @@ project(AntKingdom)
 
 set(CMAKE_CXX_STANDARD 20)
 
+file(GLOB SOURCES src/*.cpp)
+file(GLOB HEADERS src/*.hpp)
 
-set(SOURCES
-	src/main.cpp
-	src/mesh.cpp
-	src/mesh.hpp
-	src/shader.cpp
-	src/shader.hpp
-	src/unique_buffer.hpp
-	src/window.cpp
-	src/window.hpp
-)
+file(GLOB SHADER_FILES src/shaders/*.glsl)
+source_group("Shaders" FILES ${SHADER_FILES})
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SHADER_FILES})
+
+# Copy shaders folder to output dir.
+add_custom_target(copy-shaders ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders/ $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
+    DEPENDS ${PROJECT_NAME})
 
 # GLAD
 include(FetchContent)
