@@ -56,6 +56,7 @@ void ShaderStage::CompileShader(std::string source) {
 
 
 Shader::Shader(ShaderStage vertex, ShaderStage fragment) {
+    m_refTracker = std::make_shared<int>();
     std::vector<ShaderStage> stages = { vertex, fragment };
 	MakeProgram(std::move(stages));
 }
@@ -69,6 +70,7 @@ void Shader::MakeProgram(std::vector<ShaderStage> stages) {
     m_program = glCreateProgram();
 
     if (!m_program) {
+        std::cerr << "Failed to make shader program.\n";
         m_program = -1;
         return;
     }
@@ -78,9 +80,8 @@ void Shader::MakeProgram(std::vector<ShaderStage> stages) {
     }
     glLinkProgram(m_program);
 
-
     GLint success = 0;
-    glGetProgramiv(m_program, GL_COMPILE_STATUS, &success);
+    glGetProgramiv(m_program, GL_LINK_STATUS, &success);
 
     if (!success) {
 		GLint logLength = 0;

@@ -42,17 +42,6 @@ int main(int argc, char* argv[]) {
     GLFWmonitor* fullscreenMonitor = monitors[TARGET_MONITOR];
     const GLFWvidmode* monitorMeta = glfwGetVideoMode(fullscreenMonitor);
 
-
-
-
-
-    /*GLFWwindow* window = glfwCreateWindow(monitorMeta->width, monitorMeta->height, "", fullscreenMonitor, nullptr);
-    if (!window) {
-        std::cerr << "Failed to create window\n";
-        glfwTerminate();
-        return -1;
-    }*/
-
     Windows::Window window(0, 0, "App", fullscreenMonitor, nullptr);
     window.MakeThisContext();
 
@@ -78,12 +67,16 @@ int main(int argc, char* argv[]) {
 
     ShaderStage vertex("shaders/vertex.glsl", GL_VERTEX_SHADER);
     ShaderStage fragment("shaders/fragment.glsl", GL_FRAGMENT_SHADER);
-
+    Shader program(vertex, fragment);
+    //program.BindShader();
 
     // GAME EVENT LOOP.
     while (window.IsOpen()) {
         window.Update();
         quadMesh.Bind();
+        glDrawArrays(GL_TRIANGLES, 0, 8);
+
+
 
         glfwPollEvents();
     }
