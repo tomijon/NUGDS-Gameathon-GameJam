@@ -3,18 +3,24 @@ project(AntKingdom)
 
 set(CMAKE_CXX_STANDARD 20)
 
-file(GLOB SOURCES src/*.cpp)
-file(GLOB HEADERS src/*.hpp)
-
-file(GLOB SHADER_FILES src/shaders/*.glsl)
-source_group("Shaders" FILES ${SHADER_FILES})
+file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+file(GLOB HEADERS "${CMAKE_SOURCE_DIR}/src/*.hpp")
+file(GLOB SHADER_FILES "${CMAKE_SOURCE_DIR}/src/shaders/*.glsl")
+source_group("shaders" FILES ${SHADER_FILES})
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SHADER_FILES})
 
 # Copy shaders folder to output dir.
-add_custom_target(copy-shaders ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders/ $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
-    DEPENDS ${PROJECT_NAME})
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+    ${CMAKE_SOURCE_DIR}/src/shaders/ "$<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders"
+)
+
+# Make sure VS runs from actual executable location
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
 
 # GLAD
 include(FetchContent)
