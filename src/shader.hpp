@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
 #include <filesystem>
+#include <string>
+#include <vector>
 
 #include <glad/glad.h>
 
@@ -9,7 +10,7 @@
 /**
  * Shader Stage class for storing an individual shader stage.
  * Compiles and creates a shader of given type. Deletes shader
- * upon going out of scope.
+ * upon going out of scope (and all references are gone).
  */
 class ShaderStage {
 public:
@@ -21,17 +22,18 @@ public:
 
 protected:
 	std::string LoadSource(const std::filesystem::path& sourcePath);
-	void CompileShader(const std::filesystem::path& sourcePath);
+	void CompileShader(const std::string source);
 
 private:
-	GLenum m_type;
-	GLuint m_shader;
+	std::shared_ptr<int> m_refTracker = nullptr; // Tracking how many instances of this shader object there are.
+	GLenum m_type = -1;
+	GLuint m_shader = -1;
 };
 
 
 class Shader {
 public:
-	Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath);
+	Shader(ShaderStage vertex, ShaderStage fragment);
 	~Shader();
 
 	/**
@@ -40,11 +42,14 @@ public:
 	 * Marked as const as it doesn't change object state but it does change
 	 * OpenGL state.
 	 */
-	inline void BindShader() const { glUseProgram(m_shaderProgram); }
+	inline void BindShader() const { glUseProgram(m_program); }
+
+	GLuint GetProgramID() const { return m_program; }
 
 protected:
-	void MakeProgram();
+	void MakeProgram(std::vector<ShaderStage> stages);
 
 private:
-	GLuint m_shaderProgram;
+	std::shared_ptr<int> m_refTracker = nullptr; // Tracking how many program instances there are.
+	GLuint m_program;
 };
