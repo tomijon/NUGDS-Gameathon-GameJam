@@ -7,5 +7,5 @@ if not exist build/Release (
 )
 pushd build\Release\
 
-OpenGLApplication.exe
+AntKingdom.exe
 popd

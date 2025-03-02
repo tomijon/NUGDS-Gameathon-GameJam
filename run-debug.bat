@@ -7,5 +7,5 @@ if not exist build/Debug (
 )
 pushd build\Debug\
 
-OpenGLApplication.exe
+AntKingdom.exe
 popd
