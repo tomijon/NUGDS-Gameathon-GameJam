@@ -42,21 +42,6 @@ int main(int argc, char* argv[]) {
     const GLFWvidmode* monitorMeta = glfwGetVideoMode(fullscreenMonitor);
 
 
-    float quadVertices[8] = {
-        -1, -1,
-        1, -1,
-        -1, 1,
-        1, 1
-    };
-
-    std::unique_ptr<float[]> quadBuffer = std::make_unique<float[]>(12);
-    std::memcpy(quadBuffer.get(), quadVertices, 8);
-    UniqueBuffer<float> vertices(8, std::move(quadBuffer));
-
-    Mesh quadMesh(std::move(vertices));
-    quadMesh.InitialiseBufferObjects();
-
-
 
 
 
@@ -76,7 +61,23 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    float quadVertices[8] = {
+        -1, -1,
+        1, -1,
+        -1, 1,
+        1, 1
+    };
+
+    std::unique_ptr<float[]> quadBuffer = std::make_unique<float[]>(12);
+    std::memcpy(quadBuffer.get(), quadVertices, 8);
+    UniqueBuffer<float> vertices(8, std::move(quadBuffer));
+
+    Mesh quadMesh(std::move(vertices));
+    quadMesh.InitialiseBufferObjects();
+
+
     while (window.IsOpen()) {
+        window.Update();
         quadMesh.Bind();
 
         glfwPollEvents();
